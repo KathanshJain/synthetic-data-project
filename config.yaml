@@ -1,0 +1,47 @@
+# ==============================================================================
+# Central Configuration File for "Machine Learning on Artificially Forged Data"
+# All project parameters are defined here to avoid any hardcoded numbers in code.
+# ==============================================================================
+
+dataset:
+  name: "adult"
+  version: 2
+  target: "income"
+  positive_label: ">50K"
+  drop_columns:
+    - "fnlwgt"       # Final sampling weight from census bureau, not a predictive feature
+    - "education"    # Redundant categorical text duplicate of education-num
+
+split:
+  test_size: 0.2     # 20% reserved for locked holdout test set (D_test_real)
+  random_state: 42   # Fixed seed for stratified split reproducibility
+
+seed_sizes: [100, 250, 500, 1000, 2000]
+random_seeds: [0, 1, 2]
+synthetic_rows: 5000
+
+ctgan:
+  total_training_steps: 3000  # Fixed total training steps for CTGAN generator
+  batch_size: 500
+  use_gpu: false              # Run on CPU for deterministic portability
+
+smote:
+  k_neighbors: 5              # Nearest neighbors used for SMOTE-NC interpolation
+
+models:
+  random_forest:
+    n_estimators: 300
+  xgboost:
+    n_estimators: 300
+    max_depth: 6
+    learning_rate: 0.1
+
+dcr:
+  holdout_size: 1000          # Size of real holdout sample for DCR privacy baseline
+
+# Quick testing mode for fast verification of pipeline steps before full runs
+quick_mode:
+  seed_sizes: [100, 500]
+  random_seeds: [0]
+  ctgan_total_training_steps: 200
+  synthetic_rows: 1000

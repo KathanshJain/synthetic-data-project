@@ -1,0 +1,31 @@
+# ==============================================================================
+# Success Criteria for Minimum Useful Seed Size
+# Used in Step 9 to evaluate if synthetic data is realistic, useful, and private.
+# ==============================================================================
+
+# 1. Downstream Machine Learning Utility
+# The model trained on synthetic data (TSTR) must retain at least 90% of the
+# predictive performance (PR-AUC) of a model trained on the full real dataset (TRTR-full).
+utility_ratio_min: 0.90   # mean TSTR PR-AUC / mean TRTR-full PR-AUC (XGBoost)
+
+# 2. Numerical Statistical Fidelity
+# The average Kolmogorov-Smirnov (KS) statistic across all numerical columns
+# must not exceed 0.10. Lower values mean the synthetic distribution closely
+# matches the real data distribution (0 = identical distributions).
+ks_mean_max: 0.10
+
+# 3. Categorical Statistical Fidelity
+# The average Total Variation Distance (TVD) across all categorical columns
+# must not exceed 0.10. Lower values mean category probabilities match closely.
+tvd_mean_max: 0.10
+
+# 4. Privacy via Distance to Closest Record (DCR)
+# The median distance from synthetic records to real seed records must be at least
+# 80% of the distance between two independent real data samples. This ensures
+# the generator does not merely memorize or hug the real data points.
+dcr_ratio_min: 0.80        # median synthetic DCR / median holdout DCR
+
+# 5. Exact Copy Prevention
+# The percentage of synthetic rows that are 100% identical duplicates of real training rows
+# must not exceed the natural duplicate rate observed between two real partitions.
+exact_copy_rule: "synthetic exact-match rate must not exceed the holdout exact-match rate"

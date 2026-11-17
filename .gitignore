@@ -1,0 +1,33 @@
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Data Folders (Raw downloads, generated synthetics, checkpoints)
+data/raw/
+data/synthetic/
+
+# Locked Test Data: Protect CSV ground-truth data from commits
+# BUT keep the SHA-256 hash manifest trackable in git!
+data/locked/*.csv
+!data/locked/manifest.json
+
+# Large files and temporary artifacts
+*.parquet
+*.pkl
+*.joblib
+*.tar.gz
+*.zip
+
+# Operating System & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
