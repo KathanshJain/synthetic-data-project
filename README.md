@@ -168,9 +168,20 @@ pip install -r requirements.txt
 
 ## 6. How to Run Each Step
 
-*(Step-by-step runner instructions will be populated as each pipeline script is built in subsequent steps).*
+### Step 1: Load and Clean Dataset
+- **Module**: `src/clean_data.py` (Track: Kathansh)
+- **Command**: `python src/clean_data.py`
+- **Tests**: `pytest tests/test_clean_data.py -v`
+- **What it does**:
+  - Fetches Adult Census Income dataset (OpenML ID: 1590, version 2) and caches it in `data/raw/adult_raw.csv`.
+  - Removes 52 exact duplicate records **BEFORE** column removal to preserve genuine data variance (48,842 -> 48,790 rows).
+  - Drops redundant columns: `fnlwgt` (census weight) and `education` (duplicate of `education-num`).
+  - Imputes all missing values as `"Missing"` category so generative models learn missingness patterns.
+  - Inserts a unique `row_id` as the primary key column.
+  - Saves cleaned dataset to `data/processed/adult_cleaned.csv`.
+- **Status**: Completed & Verified (6/6 tests passing).
 
-1. **Step 1 (Ingest & Clean)**: `python src/clean_data.py`
+### Remaining Pipeline Steps
 2. **Step 2 (EDA Report)**: `python src/eda.py`
 3. **Step 3 (Locked Split)**: `python src/split_data.py`
 4. **Step 4 (Nested Seeds)**: `python src/extract_seeds.py`
